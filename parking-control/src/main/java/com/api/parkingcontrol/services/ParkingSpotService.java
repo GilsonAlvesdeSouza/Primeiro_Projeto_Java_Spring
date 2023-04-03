@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 
 import com.api.parkingcontrol.models.ParkingSpotModel;
 import com.api.parkingcontrol.repositories.ParkingSpotRepository;
-
-import jakarta.transaction.Transactional;
 
 @Service
 public class ParkingSpotService {
@@ -23,13 +25,16 @@ public class ParkingSpotService {
 		return parkingSpotRepository.findById(id);
 	}
 
-	@Transactional
-	public List<ParkingSpotModel> findAll() {
-		return parkingSpotRepository.findAll();
+	public Page<ParkingSpotModel> findAll(Pageable pageable) {
+		return parkingSpotRepository.findAll(pageable);
 	}
 
 	public ParkingSpotModel save(ParkingSpotModel parkingSpotModel) {
 		return parkingSpotRepository.save(parkingSpotModel);
+	}
+
+	public void delete(ParkingSpotModel parkingSpotModel) {
+		parkingSpotRepository.delete(parkingSpotModel);
 	}
 
 	public boolean existesByLicensePlateCar(String licensePlateCar) {
